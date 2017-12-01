@@ -203,10 +203,10 @@ class Pm25ViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     
     //tableview delegate
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
-    {
-        return self.topView
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+//    {
+//        return self.topView
+//    }
     
     
     
@@ -215,6 +215,7 @@ class Pm25ViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     {
         return 3
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
@@ -232,21 +233,44 @@ class Pm25ViewController: UIViewController, CLLocationManagerDelegate, UITableVi
 //                cell.detectLevelLabel.text = String(format: "(%@)",(self.AQI_Dic["MonobjName"] as? String)!)
                 
                 //AQI
-                cell.aqiNumber.text = self.AQI_Dic["AQI"] as? String
+                if self.AQI_Dic["AQI"] as? String == ""{
+                    cell.aqiNumber.text = "設備維護"
+                    cell.aqiNumber.font = .systemFont(ofSize: 10);
+                }else{
+                    cell.aqiNumber.text = self.AQI_Dic["AQI"] as? String
+                }
                 cell.aqiLevelLabel.text = self.detectAQIvalue(aqiValue: (self.AQI_Dic["AQI"] as? String)!, cell: cell)
                 
                 
                 //O3
 //                cell.o3_8avg_label.text = self.AQI_Dic["O3_8"] as? String
-                cell.o3_avg_label.text = self.AQI_Dic["O3"] as? String
+                if self.AQI_Dic["O3"] as? String == "" {
+                    cell.o3_avg_label.text = "設備維護"
+                    cell.o3_avg_label.font = .systemFont(ofSize: 10);
+                }else{
+                    cell.o3_avg_label.text = self.AQI_Dic["O3"] as? String
+                }
+                
                 
                 //PM25
 //                cell.pm25_moveAvg_label.text = self.AQI_Dic["PM25_AVG"] as? String
-                cell.pm25_avg.text = self.AQI_Dic["PM25"] as? String
+                if self.AQI_Dic["PM25"] as? String == "" {
+                    cell.pm25_avg.text = "設備維護"
+                    cell.pm25_avg.font = .systemFont(ofSize: 10);
+                }else{
+                    cell.pm25_avg.text = self.AQI_Dic["PM25"] as? String
+                }
+                
                 
                 //PM10
 //                cell.pm10_moveAvg_label.text = self.AQI_Dic["PM10_AVG"] as? String
-                cell.pm10_avg.text = self.AQI_Dic["PM10"] as? String
+                if self.AQI_Dic["PM10"] as? String == "" {
+                    cell.pm10_avg.text = "設備維護"
+                    cell.pm10_avg.font = .systemFont(ofSize: 10);
+                }else{
+                    cell.pm10_avg.text = self.AQI_Dic["PM10"] as? String
+                }
+                
             }
             
             tmpCell = cell
@@ -287,7 +311,10 @@ class Pm25ViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     //AQI method
     func detectAQIvalue(aqiValue:String, cell:AQITableViewCell) -> String {
-        let currentValue:Int = Int(aqiValue)!
+        var currentValue:Int = -1 //= Int(aqiValue)!
+        if aqiValue != "" {
+            currentValue = Int(aqiValue)!
+        }
 //        print("[xxxx] current_AQI: \(currentValue)")
         var currentLevel:String!
         
@@ -321,9 +348,12 @@ class Pm25ViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     //健康影響
     func getHealthAlert(aqiLevel:String) -> String {
         
-        let currentValue:Int = Int(aqiLevel)!
+        var currentValue:Int = -1//Int(aqiLevel)!
         var alertStr:String!
         
+        if aqiLevel != "" {
+            currentValue = Int(aqiLevel)!
+        }
         
         switch currentValue {
         case 0...50:
@@ -347,9 +377,12 @@ class Pm25ViewController: UIViewController, CLLocationManagerDelegate, UITableVi
     
     //活動建議
     func getActivityStr(aqiLevel:String) -> String {
-        let currentValue:Int = Int(aqiLevel)!
+        var currentValue:Int = -1 //= Int(aqiLevel)!
         var alertStr:String!
         
+        if aqiLevel != "" {
+            currentValue = Int(aqiLevel)!
+        }
         
         switch currentValue {
         case 0...50:
